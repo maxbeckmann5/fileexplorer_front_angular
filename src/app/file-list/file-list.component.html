@@ -1,0 +1,63 @@
+<head>
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
+</head>
+<div class="center">
+  <nav class="horizontal-nav">
+    <ul>
+      <li><a>{{ currentFolder }}</a></li>
+    </ul>
+  </nav>
+  <div class="file-list">
+      <input type="text" [(ngModel)]="searchTerm" placeholder="Search files...">
+      <button class="button-sc" id="button1">
+        <span (click)="refreshPage()" class="material-symbols-outlined">
+          refresh
+        </span>
+      </button>
+      <app-file-upload></app-file-upload>
+      <table id="table">
+        <tbody>
+          <tr>
+              <th colspan="4">name</th>
+              <th>size</th>
+              <th>last modified</th>
+              <th>type</th>
+          </tr>
+          <tr *ngFor="let file of files" [ngStyle]="{'cursor': file.directory ? 'pointer' : 'default'}" (click)="file.directory && handleFolderClick(file.name)">
+            <td>
+              <ng-container *ngIf="file.directory">
+                <span class="material-symbols-outlined" style="color:var(--primary-color);">folder</span>
+              </ng-container>
+              <ng-container *ngIf="!file.directory">
+                <span class="material-symbols-outlined" style="color:var(--primary-color);">draft</span>
+              </ng-container>
+            </td>
+            <td>{{ file.name }}</td>
+            <td>
+              <button 
+                *ngIf="!file.directory" 
+                class="button-sc" 
+                (click)="downloadFile(file.path)">
+                <span class="material-symbols-outlined">download</span>
+              </button>
+            </td>
+            <td>
+              <button 
+                  *ngIf="!file.directory"
+                  class="button-sc" 
+                  (click)="deleteFile(file.name)">
+                  <span class="material-symbols-outlined">delete</span>
+              </button>
+            </td>
+            <td>
+              <ng-container *ngIf="file.size && file.size !== '0 B'">
+                {{ file.size }}
+              </ng-container>
+            </td>
+            <td>{{ file.modified }}</td>
+            <td>{{ file.type }}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>  
+</div>
