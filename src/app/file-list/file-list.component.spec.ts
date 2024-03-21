@@ -11,7 +11,7 @@ describe('FileListComponent', () => {
       declarations: [FileListComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(FileListComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -21,3 +21,5 @@ describe('FileListComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+// ✅

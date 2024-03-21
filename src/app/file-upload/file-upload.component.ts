@@ -8,15 +8,18 @@ import { HttpClient } from '@angular/common/http';
 })
 export class FileUploadComponent {
 
+  // ✅
   selectedFile: File | null = null;
 
   constructor(private http: HttpClient) { }
 
+  // ❌ missing proper event type definition
   handleFileChange(event: any): void {
     this.selectedFile = event.target.files[0];
   }
 
   handleUpload(): void {
+    // ✅ catching error with if at the start of function combined with return statement
     if (!this.selectedFile) {
       alert('Please select a file to upload');
       return;

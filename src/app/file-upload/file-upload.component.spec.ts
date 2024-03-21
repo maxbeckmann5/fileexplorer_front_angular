@@ -11,7 +11,7 @@ describe('FileUploadComponent', () => {
       declarations: [FileUploadComponent]
     })
     .compileComponents();
-    
+
     fixture = TestBed.createComponent(FileUploadComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
@@ -21,3 +21,5 @@ describe('FileUploadComponent', () => {
     expect(component).toBeTruthy();
   });
 });
+
+// ✅
