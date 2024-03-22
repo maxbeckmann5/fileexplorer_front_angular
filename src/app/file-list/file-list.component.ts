@@ -8,6 +8,7 @@ import { FileService } from '../file.service';
 })
 export class FileListComponent implements OnInit {
 
+  // ❌ any any any!!!
   files: any[] = [];
   filteredFiles: any[] = [];
   currentPath: string = '';
@@ -34,7 +35,12 @@ export class FileListComponent implements OnInit {
           this.getFileAttributes(file.name);
         });
         // Sortiere die Dateien so, dass Ordner vor Dateien erscheinen und ansonsten alphabetisch nach Dateinamen
+
+        // ❌ Never use else, there's always a better solution (see example below). but still very well sorted!
         this.files.sort((a, b) => {
+          if(!a.directory && !b.directory) return a.name.localeCompare(b.name);
+          return a.directory && !b.directory ? -1 : 1;
+
           if (a.directory && !b.directory) {
             return -1; // Ordner "a" kommt vor Datei "b"
           } else if (!a.directory && b.directory) {
@@ -48,7 +54,9 @@ export class FileListComponent implements OnInit {
     );
   }
 
+
   getFileAttributes(fileName: string): void {
+    // ✅
     this.fileService.getFileAttributes(fileName).subscribe(
       attributes => {
         // Find the file in the files array
@@ -66,6 +74,7 @@ export class FileListComponent implements OnInit {
   }
 
   handleFolderClick(folderName: string): void {
+    // ✅
     const newPath = this.currentPath ? `${this.currentPath}/${folderName}` : folderName;
     this.currentPath=newPath + '/' ;
     this.getFiles(`/${newPath}`);
@@ -73,6 +82,7 @@ export class FileListComponent implements OnInit {
   }
 
   downloadFile = (filePath: string) => {
+    // ✅ smart solution to just purposely encode and the decode the forward slashes
     const encodedFilePath = encodeURIComponent(filePath).replace(/%2F/g, '/');
     window.open(`http://localhost:8080/download/${encodedFilePath}`);
   };
@@ -83,6 +93,7 @@ export class FileListComponent implements OnInit {
   }
 
   deleteFile(fileName: string): void {
+    // ✅
     const filePath = this.currentPath ? `${this.currentPath}/${fileName}` : fileName;
     const encodedFilePath = encodeURIComponent(filePath).replace(/%2F/g, '/');
     this.fileService.deleteFile(encodedFilePath).subscribe(
@@ -94,7 +105,7 @@ export class FileListComponent implements OnInit {
       error => console.error(`Error deleting file ${fileName}:`, error)
     );
   }
-  
-  
+
+
 
 }
